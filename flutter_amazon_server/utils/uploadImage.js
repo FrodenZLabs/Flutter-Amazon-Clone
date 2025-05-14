@@ -7,6 +7,7 @@ export const uploadMultiple = async (request, response, next) => {
 
     for (const image of images) {
       const result = await cloudinary.uploader.upload(image.path, {
+        folder: "flutter_amazon",
         resource_type: "auto",
       });
       imageUrls.push(result.secure_url);

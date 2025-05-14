@@ -2,6 +2,11 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import authRoutes from "./routes/auth.routes.js";
+import productRoutes from "./routes/product.routes.js";
+import userRoutes from "./routes/user.routes.js";
+import orderRoutes from "./routes/order.routes.js";
+import cartRoutes from "./routes/cart.routes.js";
 dotenv.config();
 
 mongoose
@@ -12,6 +17,11 @@ mongoose
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Server Port
 const PORT = process.env.PORT;
