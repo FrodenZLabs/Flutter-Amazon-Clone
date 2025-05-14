@@ -1,6 +1,9 @@
 import bcryptjs from "bcryptjs";
 import Auth from "../models/auth.models.js";
 import { errorHandler } from "../utils/errorHandler.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const signup = async (request, response, next) => {
   try {
@@ -78,6 +81,7 @@ export const signin = async (request, response, next) => {
         user: rest,
       });
   } catch (error) {
+    console.log(error);
     next(errorHandler(500, "Error signing in."));
   }
 };

@@ -10,9 +10,9 @@ import {
 
 const router = express.Router();
 
-router.get("/get_guarantors", verifyToken, getAllUsers);
-router.get("/get_guarantor/:id", verifyToken, getUserById);
-router.post("/new_guarantor", verifyToken, createUser);
+router.get("/get_users", verifyToken, getAllUsers);
+router.get("/get_user/:id", verifyToken, getUserById);
+router.post("/create_user", verifyToken, createUser);
 router.put("/update_user/:id", verifyToken, updateUser);
 router.delete("/delete_user/:id", verifyToken, deleteUser);
 

@@ -1,3 +1,4 @@
+import Auth from "../models/auth.models.js";
 import User from "../models/user.models.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
@@ -120,24 +121,25 @@ export const updateUser = async (request, response, next) => {
     }
 
     // Ensure user making the request is the owner of the client record
-    if (user.userId.toString() !== request.user.id) {
+    if (user.authId.toString() !== request.user.id) {
       return next(
         errorHandler(403, "Unauthorized: You can only update your own account")
       );
     }
 
+    const userUpdateFields = {};
+    if (first_name) userUpdateFields.first_name = first_name;
+    if (last_name) userUpdateFields.last_name = last_name;
+    if (id_number) userUpdateFields.id_number = id_number;
+    if (phone_no) userUpdateFields.phone_no = phone_no;
+    if (gender) userUpdateFields.gender = gender;
+    if (address) userUpdateFields.address = address;
+    if (town_city) userUpdateFields.town_city = town_city;
+    if (county) userUpdateFields.county = county;
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      {
-        first_name,
-        last_name,
-        phone_no,
-        id_number,
-        gender,
-        address,
-        town_city,
-        county,
-      },
+      { $set: userUpdateFields },
       { new: true, runValidators: true }
     );
 
@@ -151,6 +153,7 @@ export const updateUser = async (request, response, next) => {
       updatedUser,
     });
   } catch (error) {
+    console.log(error);
     next(errorHandler(500, "Failed to update user", error));
   }
 };
@@ -169,6 +172,7 @@ export const deleteUser = async (request, response, next) => {
       return next(errorHandler(404, "User not found"));
     }
 
+    await Auth.findByIdAndDelete(user.authId);
     response.status(200).json({
       success: true,
       message: "User deleted successfully",

@@ -3,7 +3,6 @@ import Product from "../models/product.models.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import cloudinary from "../utils/cloudinary.js";
 
-
 export const addProduct = async (request, response, next) => {
   try {
     const { name, description, category, price, stock } = request.body;
@@ -36,6 +35,7 @@ export const addProduct = async (request, response, next) => {
       message: "Product added successfully",
     });
   } catch (error) {
+    console.log(error);
     next(errorHandler(500, "Failed to add product", error));
   }
 };
